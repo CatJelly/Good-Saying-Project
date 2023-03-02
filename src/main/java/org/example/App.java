@@ -1,16 +1,48 @@
 package org.example;
 
+import org.example.goodSaying.entity.GoodSaying;
+
+import java.io.*;
 import java.util.*;
 
 public class App {
+    static final String FILE_PATH = "data.txt";
+
     static int sayingNum = 1;
     private Scanner sc;
     private Map<Integer, GoodSaying> map;
+    private File file;
+    private FileReader fr;
+    private FileWriter fw;
+    private BufferedReader br;
+    private BufferedWriter bw;
 
 
     public void init() {
         map = new HashMap<>();
         sc = new Scanner(System.in);
+        file = new File(FILE_PATH);
+
+        try {
+            if(!file.exists()) {
+                file.createNewFile();
+            }
+            fr = new FileReader(file);
+            fw = new FileWriter(file, true);
+        } catch (IOException e) { }
+
+        br = new BufferedReader(fr);
+        bw = new BufferedWriter(fw);
+    }
+
+    public void finish() {
+        sc.close();
+        try {
+            bw.close();
+            br.close();
+            fw.close();
+            fr.close();
+        } catch (IOException e) { }
     }
 
     public void showTitle() {
@@ -22,7 +54,7 @@ public class App {
     }
 
     public GoodSaying addSaying(String author, String saying) {
-        GoodSaying temp = new GoodSaying(author, saying);
+        GoodSaying temp = new GoodSaying(sayingNum, author, saying);
         map.put(sayingNum, temp);
         sayingNum++;
         return temp;
@@ -30,8 +62,9 @@ public class App {
 
     public void printSaying() {
         System.out.println("번호\t/ 작가\t/ 명언");
-        for (GoodSaying gs : map.values()) {
-            System.out.println(gs);
+        System.out.println("---------------------------------");
+        for (int key : map.keySet().stream().sorted((o1, o2) -> o2 - o1).toList()) {
+            System.out.println(map.get(key));
         }
     }
 
@@ -67,8 +100,36 @@ public class App {
         }
     }
 
+    public void writeSaying() {
+        for(GoodSaying gs : map.values()) {
+            String res = String.format("%d\t%s\t%s\n", gs.getId(), gs.getAuthor(), gs.getSaying());
+            try {
+                bw.write(res);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void readSaying() {
+        String line = "";
+        int id = 1;
+        while(true) {
+            try {
+                if ((line = br.readLine()) == null)
+                    break;
+            } catch (IOException e) { }
+            String [] split = line.split("\t");
+            id = Integer.parseInt(split[0]);
+            map.put(id, new GoodSaying(id, split[1], split[2]));
+        }
+        App.sayingNum = id + 1;
+    }
+
+
     public void run() {
         init();
+        readSaying();
         showTitle();
         while (true) {
             showCommandLine();
@@ -99,6 +160,7 @@ public class App {
             }
         }
 
-        sc.close();
+        writeSaying();
+        finish();
     }
 }

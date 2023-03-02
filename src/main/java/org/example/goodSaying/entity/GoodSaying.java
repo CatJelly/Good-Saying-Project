@@ -1,14 +1,14 @@
-package org.example;
+package org.example.goodSaying.entity;
 
 public class GoodSaying {
     private String author;
     private String saying;
     private int id;
 
-    public GoodSaying(String author, String saying) {
+    public GoodSaying(int id, String author, String saying) {
         this.author = author;
         this.saying = saying;
-        id = App.sayingNum;
+        this.id = id;
     }
 
     public String getAuthor() {
