@@ -28,6 +28,7 @@ public class Main {
                 System.out.print("작가 : ");
                 String author = sc.nextLine();
                 list.add(new GoodSaying(author, saying));
+
             }
         }
 
