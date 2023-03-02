@@ -3,10 +3,12 @@ package org.example;
 public class GoodSaying {
     private String author;
     private String saying;
+    private int id;
 
     public GoodSaying(String author, String saying) {
         this.author = author;
         this.saying = saying;
+        id = Main.sayingNum++;
     }
 
     public String getAuthor() {
@@ -15,5 +17,9 @@ public class GoodSaying {
 
     public String getSaying() {
         return saying;
+    }
+
+    public int getId() {
+        return id;
     }
 }

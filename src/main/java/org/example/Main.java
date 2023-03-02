@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    static int sayingNum = 1;
+
     public static void main(String[] args) {
         List<GoodSaying> list = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
@@ -27,8 +29,10 @@ public class Main {
                 String saying = sc.nextLine();
                 System.out.print("작가 : ");
                 String author = sc.nextLine();
-                list.add(new GoodSaying(author, saying));
+                GoodSaying temp = new GoodSaying(author, saying);
+                list.add(temp);
 
+                System.out.printf("%d번 명언이 등록되었습니다.\n", temp.getId());
             }
         }
 
