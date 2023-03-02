@@ -14,6 +14,9 @@ public class App {
     public void showTitle() {
         System.out.println("== 명언 앱 ==");
     }
+    public void showCommandLine() {
+        System.out.print("명령) ");
+    }
 
     public GoodSaying addSaying(String author, String saying) {
         GoodSaying temp = new GoodSaying(author, saying);
@@ -49,7 +52,7 @@ public class App {
         init();
         showTitle();
         while (true) {
-            System.out.print("명령) ");
+            showCommandLine();
 
             String command = sc.nextLine();
 
