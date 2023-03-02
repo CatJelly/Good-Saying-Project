@@ -8,7 +8,7 @@ public class GoodSaying {
     public GoodSaying(String author, String saying) {
         this.author = author;
         this.saying = saying;
-        id = Main.sayingNum++;
+        id = App.sayingNum;
     }
 
     public String getAuthor() {
