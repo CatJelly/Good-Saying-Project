@@ -4,16 +4,19 @@ import java.util.*;
 
 public class App {
     static int sayingNum = 1;
+    private Scanner sc;
     private Map<Integer, GoodSaying> map;
 
 
     public void init() {
         map = new HashMap<>();
+        sc = new Scanner(System.in);
     }
 
     public void showTitle() {
         System.out.println("== 명언 앱 ==");
     }
+
     public void showCommandLine() {
         System.out.print("명령) ");
     }
@@ -27,7 +30,7 @@ public class App {
 
     public void printSaying() {
         System.out.println("번호\t/ 작가\t/ 명언");
-        for(GoodSaying gs : map.values()) {
+        for (GoodSaying gs : map.values()) {
             System.out.println(gs);
         }
     }
@@ -35,45 +38,64 @@ public class App {
     public GoodSaying checkId(int id) {
         return map.get(id);
     }
+
     public void deleteSaying(int id) {
         GoodSaying deleteObj = checkId(id);
-        if(deleteObj == null) {
+        if (deleteObj == null) {
             System.out.printf("%d번 명언은 존재하지 않습니다.\n", id);
-        }
-        else {
+        } else {
             map.remove(id);
             System.out.printf("%d번 명언이 삭제되었습니다.\n", id);
         }
     }
 
-    public void run() {
-        Scanner sc = new Scanner(System.in);
+    public void modifySaying(int id) {
+        GoodSaying modifyObj = checkId(id);
+        if (modifyObj == null) {
+            System.out.printf("%d번 명언은 존재하지 않습니다.\n", id);
+        } else {
+            System.out.printf("명언(기존) : %s\n", modifyObj.getSaying());
+            System.out.print("명언 : ");
+            String saying = sc.nextLine().trim();
+            modifyObj.setSaying(saying);
+            System.out.printf("작가(기존) : %s\n", modifyObj.getAuthor());
+            System.out.print("작가 : ");
+            String author = sc.nextLine().trim();
+            modifyObj.setAuthor(author);
+            map.put(id, modifyObj);
+            System.out.printf("%d번 명언이 삭제되었습니다.\n", id);
+        }
+    }
 
+    public void run() {
         init();
         showTitle();
         while (true) {
             showCommandLine();
 
-            String command = sc.nextLine();
+            String command = sc.nextLine().trim();
 
             if (command.equals("종료")) {
                 break;
-            }
-            else if (command.equals("등록")) {
+            } else if (command.equals("등록")) {
                 System.out.print("명언 : ");
-                String saying = sc.nextLine();
+                String saying = sc.nextLine().trim();
                 System.out.print("작가 : ");
-                String author = sc.nextLine();
+                String author = sc.nextLine().trim();
 
                 GoodSaying temp = addSaying(author, saying);
                 System.out.printf("%d번 명언이 등록되었습니다.\n", temp.getId());
             }
-            else if(command.equals("목록")) {
+            else if (command.equals("목록")) {
                 printSaying();
             }
-            else if(command.contains("삭제")) {
-                String [] split = command.split("\\?|=");
+            else if (command.contains("삭제")) {
+                String[] split = command.split("\\?|=");
                 deleteSaying(Integer.parseInt(split[2]));
+            }
+            else if(command.contains("수정")) {
+                String[] split = command.split("\\?|=");
+                modifySaying(Integer.parseInt(split[2]));
             }
         }
 
