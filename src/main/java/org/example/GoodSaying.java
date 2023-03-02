@@ -22,4 +22,9 @@ public class GoodSaying {
     public int getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%d\t/ %s\t/ %s", id, author, saying);
+    }
 }
